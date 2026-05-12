@@ -1,4 +1,4 @@
-# Adam's Goal Tracker App
+# Goal Tracker App - CS50 Final Project
 #### Video Demo: https://www.youtube.com/watch?v=drehpYfWFf8
 
 ## Summary:
