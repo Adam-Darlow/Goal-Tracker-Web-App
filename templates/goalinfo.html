@@ -1,0 +1,160 @@
+<!-- This is for when a user clicks on a habit they have made and want to see more info about their goal or edit it -->
+{% extends "layout.html" %}
+
+
+{% block title %}
+
+    Edit Goal
+
+{% endblock %}
+
+
+{% block body %}
+
+    <header class="header">
+        <h1 class="goal_tracker_heading"><a href="/">Goal Tracker</a></h1>
+        <hr>
+        <h2>Your personal tracker to achieve your goals!</h2>
+    </header>
+
+    <nav class="navbar navbar-expand-lg m-2" style="background-color: white;">
+        <div class="container-fluid">
+            <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+
+                {% if session["user_id"] %}
+
+                    <ul class="navbar-nav mx-auto p-2">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/">Your Schedule</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="/goals">Your Goals</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/calendar">Calendar and History</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/logout">Logout</a>
+                        </li>
+                    </ul>
+
+                {% else %}
+
+                    <ul class="navbar-nav mx-auto p-2">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/login">Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/register">Register</a>
+                        </li>
+                    </ul>
+
+                {% endif %}
+
+            </div>
+        </div>
+    </nav>
+
+    <br>
+
+    <main class="container">
+        <br>
+        <h2 class="pagetitleheading">{{ goal_name }}</h2>
+
+        <div class="smart_summary">
+            <h3><strong>SMART Goals</strong></h3>
+            <p>The SMART system is a structured and fantastic framework for setting goals and is an incredible way of making sure your goals are attainable. Use the form below to define each part of your goal and submit it to your goals list. Make sure to fill out all the areas. You may find some of these areas overlap with each other so it is okay to repeat yourself. Just provide as much detail as you can!</p>
+            <p><strong>Make sure all fields marked with * are filled in.</strong></p>
+
+            {% if missingfield %}
+
+                <p style="color: red;"><strong>Make sure all fields are completed.</strong></p>
+
+            {% endif %}
+
+        </div>
+
+        <form action="/goalinfo" method="post" class="goal_form">
+            <div>
+                <input type="hidden" name="title" value="{{ goal_name }}">
+            </div>
+            <div>
+                <input type="hidden" name="progress_number" value="{{ progress_number }}">
+            </div>
+            <div>
+                <input type="hidden" name="progress_state" value="{{ progress_state }}">
+            </div>
+            <div class="goal_form_box">
+                <h4>Specific: Define exactly what your goal is! *</h4>
+                <p>Be concise and clear on what you want to achieve.</p>
+                <hr>
+                <input class="goal_form_input" type="text" name="specific" value="{{ goal_specific }}" autocomplete="off">
+                <p>Bad Example: 'I want to start going for runs.' - This is vague and doesn't provide a clear idea of when the goal is completed or not.</p>
+                <p>Good Example: 'My goal is to be able to run 5 Kilometres without resting or walking.'</p>
+            </div>
+            <div class="goal_form_box">
+                <h4>Measurable: Provide a method of being able to track your progress! *</h4>
+                <p>Write down how you can measure your progress.</p>
+                <hr>
+                <input class="goal_form_input" type="text" name="measurable" value="{{ goal_measurable }}" autocomplete="off">
+                <p>Bad Example: 'Just run until I get tired.'- There is no quantifiable data to measure your progress here.</p>
+                <p>Good Example: 'Run the 5K and keep track of the number of times I rested. As time goes by, try and decrease this number to 0.'</p>
+            </div>
+            <div class="goal_form_box">
+                <h4>Achievable: Make sure you goal is ambitious but also attainable! *</h4>
+                <p>This should be something that is reachable with your current skill set.</p>
+                <hr>
+                <input class="goal_form_input" type="text" name="achievable" value="{{ goal_achievable }}" autocomplete="off">
+                <p>Bad Example: 'Run 5K in 20 minutes.' - While ambitious, running 5 kilometres in 20 minutes would be very challenging, especially for a beginner.</p>
+                <p>Good Example: 'Run 5K in 40 minutes.'</p>
+            </div>
+            <div class="goal_form_box">
+                <h4>Realistic: While also achievable, make sure your goal can be completed without extreme conditions! *</h4>
+                <p>Write down a realistic objective for your goal.</p>
+                <hr>
+                <input class="goal_form_input" type="text" name="realistic" value="{{ goal_realistic }}" autocomplete="off">
+                <p>Bad Example: 'I am going to run 6 times a week.' - While also ambitious and do-able, running 6 times a week will potentially get you to your goal faster, but there is a high chance of serious injury at that frequency.</p>
+                <p>Good Example: 'I am going to run 3 times a week.'</p>
+            </div>
+            <div class="goal_form_box">
+                <h4>Timely: Make sure your goal has an end date! *</h4>
+                <p>Deadlines help with action and accountability.</p>
+                <hr>
+                <input class="goal_form_input" type="text" name="timely" value="{{ goal_timely }}" autocomplete="off">
+                <p>Bad Example: 'I'll just go for a run now and again until I hit my target.' - This lacks accountability and, without a time limit, you may never reach your goal or it will take a long time to finish.</p>
+                <p>Good Example: 'My goal is to be able to run 5 Kilometres in under 40 minutes without resting or walking, 3 times a week by the end of next month.'</p>
+            </div>
+            <div class="goal_form_box">
+                <h4>How long or how often a day will you work towards this goal? *</h4>
+                <hr>
+                <input class="goal_form_input_len_num" type="number" name="length" value="{{ goal_length }}" autocomplete="off" min="0">
+                <input class="goal_form_input_len_unit" type="text" name="length_unit" value="{{ goal_length_unit }}" autocomplete="off">
+            </div>
+            <div class="goal_form_box">
+                <h4>Select which days you want to work on your goal: Select at least one day *</h4>
+                <hr>
+                <input class="daycheckboxmon" type="checkbox" name="monday" value="True" {% if goal_monday %}checked{% endif %} id="monday"><label for="monday">Monday</label>
+                <input class="daycheckbox" type="checkbox" name="tuesday" value="True" {% if goal_tuesday %}checked{% endif %} id="tuesday"><label for="tuesday">Tuesday</label>
+                <input class="daycheckbox" type="checkbox" name="wednesday" value="True" {% if goal_wednesday %}checked{% endif %} id="wednesday"><label for="wednesday">Wednesday</label>
+                <input class="daycheckbox" type="checkbox" name="thursday" value="True" {% if goal_thursday %}checked{% endif %} id="thursday"><label for="thursday">Thursday</label>
+                <input class="daycheckbox" type="checkbox" name="friday" value="True" {% if goal_friday %}checked{% endif %} id="friday"><label for="friday">Friday</label>
+                <input class="daycheckbox" type="checkbox" name="saturday" value="True" {% if goal_saturday %}checked{% endif %} id="saturday"><label for="saturday">Saturday</label>
+                <input class="daycheckbox" type="checkbox" name="sunday" value="True" {% if goal_sunday %}checked{% endif %} id="sunday"><label for="sunday">Sunday</label>
+            </div>
+
+            <div class="goal_form_button">
+                <button type="submit" class="btn btn-primary"><strong>Update {{ goal_name }}</strong></button>
+            </div>
+        </form>
+    <br>
+    </main>
+
+    <footer class="static_footer">
+        <p><strong>Adam's GoalTracker Site 2026</strong></p>
+        <p class="photo_info">Photo by Toomas Tartes provided by Unsplash</p>
+    </footer>
+
+{% endblock %}

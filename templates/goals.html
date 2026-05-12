@@ -1,0 +1,145 @@
+<!-- This page is where all the goals that have been created are listed -->
+{% extends "layout.html" %}
+
+{% block title %}
+
+    Goals
+
+{% endblock %}
+
+{% block body %}
+
+    <header class="header">
+        <h1 class="goal_tracker_heading"><a href="/">Goal Tracker</a></h1>
+        <hr>
+        <h2>Your personal tracker to achieve your goals!</h2>
+    </header>
+
+    <nav class="navbar navbar-expand-lg m-2" style="background-color: white;">
+        <div class="container-fluid">
+            <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+
+                {% if session["user_id"] %}
+
+                    <ul class="navbar-nav mx-auto p-2">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/">Your Schedule</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="/goals">Your Goals</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/calendar">Calendar and History</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/logout">Logout</a>
+                        </li>
+                    </ul>
+
+                {% else %}
+
+                    <ul class="navbar-nav mx-auto p-2">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/login">Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/register">Register</a>
+                        </li>
+                    </ul>
+
+                {% endif %}
+
+            </div>
+        </div>
+    </nav>
+
+    <br>
+
+    <main class="container">
+        <br>
+        <h2 class="pagetitleheading">Your Goals</h2>
+        <br>
+
+        {% if usersgoals == True %}
+            <div class="goaltableheading">
+                <h3>Your List of Goals:</h3>
+                <form action="/add_goal"><button class="btn btn-primary"><strong>Add a New Goal</strong></button></form>
+            </div>
+            <hr>
+            <br>
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr class="table-info">
+                        <th class="table_headings">Goal</th> <!-- Name of Goal -->
+                        <th class="table_headings">Amount Per Day</th>
+                        <th class="table_headings">Selected Days</th> <!-- Shows icons of the days in the week in which this goal repeats -->
+                        <th class="table_headings">Goal Info</th> <!-- Link in cell to take user to goal page which lays out all the habits info which they can change -->
+                        <th class="table_headings">Delete Goal</th> <!-- Adds a button inside to take to the delete page to remove habits -->
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <!-- Loop through all goals that have been created -->
+                    {% for goal in userscurrentgoals %}
+
+                        <tr>
+                            <td class="tabledata">{{ goal["goal_title"] }}</td> <!-- Name -->
+                            <td class="tabledata">{{ goal["length_of_goal"] }} - {{ goal["unit_type_of_length"] }}</td> <!-- Times per day -->
+                            <td class="goaltabledays tabledata"> <!-- Add days if there value is true -->
+                                {% if goal.monday == True %}
+                                    <div class="daypills">Mon</div>
+                                {% endif %}
+
+                                {% if goal.tuesday == True %}
+                                    <div class="daypills">Tue</div>
+                                {% endif %}
+
+                                {% if goal.wednesday == True %}
+                                    <div class="daypills">Wed</div>
+                                {% endif %}
+
+                                {% if goal.thursday == True %}
+                                    <div class="daypills">Thu</div>
+                                {% endif %}
+
+                                {% if goal.friday == True %}
+                                    <div class="daypills">Fri</div>
+                                {% endif %}
+
+                                {% if goal.saturday == True %}
+                                    <div class="daypills">Sat</div>
+                                {% endif %}
+
+                                {% if goal.sunday == True %}
+                                    <div class="daypills">Sun</div>
+                                {% endif %}
+                            </td>
+                            <td class="tabledata"><form action="/goalinfo"><button class="btn btn-info" name="goal_title" value="{{ goal['goal_title'] }}" type="submit"><strong>More Info/Edit Goal</strong></button></form></td> <!-- More info link -->
+                            <td class="tabledata"><form action="/delete_goal"><button class="btn btn-danger" name="goal_title" value="{{ goal['goal_title'] }}" type="submit"><strong>Delete Goal</strong></button></form></td> <!-- Delete Button -->
+                        </tr>
+
+                    {% endfor %}
+
+                </tbody>
+            </table>
+
+        {% else %}
+
+            <!-- Condition if the user doesn't have any goals yet -->
+            <h3 class="pagetitleheading">Your list is currently empty.</h3>
+            <h5 class="pagetitleheading">Click <a href="/add_goal">here</a> to add your goal!</h5>
+
+        {% endif %}
+
+        <br>
+    </main>
+
+    <footer>
+        <p><strong>Adam's GoalTracker Site 2026</strong></p>
+        <p class="photo_info">Photo by Toomas Tartes provided by Unsplash</p>
+    </footer>
+
+{% endblock %}

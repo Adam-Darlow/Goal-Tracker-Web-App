@@ -1,0 +1,248 @@
+/* List all styling here */
+#body_styling {
+    background-color: lightblue;
+    background-image: url('toomas-tartes-Yizrl9N_eDA-unsplash_medium.jpg');
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: top;
+    font-family: sans-serif;
+}
+
+/* Image citation */
+/*
+    image: toomas-tartes-Yizrl9N_eDA-unsplash_medium.jpg
+    src: https://unsplash.com/photos/two-person-walking-towards-mountain-covered-with-snow-Yizrl9N_eDA
+    Photographer: Toomas Tartes
+    Site: Unsplash
+*/
+
+
+.container {
+    background-color: white;
+    opacity: 95%;
+    border-radius: 10px;
+}
+
+/* Header */
+.header hr {
+    height: 5px;
+    background-color: white;
+}
+
+.header {
+    background-color: #0d6efd;
+    color: white;
+    padding: 1rem;
+    text-align: center;
+}
+
+.goal_tracker_heading a {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+}
+
+/* Dividers and Breaks */
+hr {
+    background-color: black;
+    height: 2px;
+}
+
+/* Page Title Heading */
+.pagetitleheading, .pagesubheading {
+    text-align: center;
+    font-weight: bold;
+}
+
+
+/* Clear Day Headings */
+.cleardayheading {
+    text-align: center;
+}
+
+
+/* Navbar */
+nav {
+    font-size: large;
+    font-weight: bold;
+    border-radius: 10px;
+}
+
+
+/* Forms */
+.accessform {
+    margin-left: auto;
+    margin-right: auto;
+    width: 300px;
+    text-align: center;
+}
+
+.smart_summary {
+    padding: 25px;
+}
+
+.centreform {
+    text-align: center;
+}
+
+.goal_form_box {
+    border: 3px ;
+    padding: 15px;
+    border-radius: 5px;
+    background-color: #e3f2fd;
+    margin: 25px;
+}
+
+.goal_form_box hr {
+    background-color: black;
+    height: 2px;
+}
+
+.goal_form_button {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.goal_form_input {
+    width: 50%;
+    margin-top: 5px;
+    margin-right: 5px;
+    margin-bottom: 20px;
+    margin-left: 0px;
+}
+
+.goal_form_input_len_num, .goal_form_input_len_unit {
+    width: 40%;
+    margin-top: 5px;
+    margin-right: 5px;
+    margin-bottom: 20px;
+    margin-left: 0px;
+}
+
+.daycheckboxmon {
+    margin-right: 5px;
+}
+
+.daycheckbox {
+    margin-left: 10px;
+    margin-right: 5px;
+}
+
+
+/* Calendar and Blocks */
+.calendar_table{
+    border-collapse: separate;
+    border-spacing: 5px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.green_block {
+    background: green;
+    color: white;
+    padding: 3px;
+    width: 300px;
+    text-align: center;
+    border-radius: 8px;
+}
+
+.gray_block {
+    background: lightgray;
+    color: gray;
+    padding: 3px;
+    width: 300px;
+    text-align: center;
+    border-radius: 8px;
+}
+
+
+/* Table Info */
+.table_headings {
+    text-align: center;
+    vertical-align: middle;
+    font-size: large;
+}
+
+.goaltableheading {
+    display: flex;
+}
+
+.goaltableheading form {
+    margin-left: auto;
+}
+
+.tabledata {
+    text-align: center;
+    vertical-align: middle;
+    font-weight: bold;
+}
+
+.progressbuttons {
+    font-weight: bold;
+}
+
+.goaltabledays {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.daypills {
+    background: teal;
+    color: white;
+    padding: 4px;
+    text-align: center;
+    border-radius: 99px;
+    width: 50px;
+    margin: 3px;
+}
+
+.progressbar {
+    height: 33px;
+    vertical-align: middle;
+    width: 75%;
+}
+
+.progressnumbers {
+    text-align: center;
+    vertical-align: middle;
+    font-weight: bold;
+    font-size: small;
+    margin-left: 3px;
+    margin-right: 3px;
+}
+
+/* Begin Day Button */
+#begin_day_button {
+    height: 100px;
+    width: 300px;
+    font-size: xx-large;
+    font-weight: bold;
+}
+
+
+/* Footers */
+footer {
+    background-color: #0d6efd;
+    color: #fff;
+    margin-top: 3rem;
+    padding: 2rem;
+    text-align: center;
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+}
+
+.static_footer {
+    position: static;
+}
+
+footer p {
+    margin: 0;
+}
+
+.photo_info {
+    font-size: x-small;
+}

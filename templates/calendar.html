@@ -1,0 +1,160 @@
+<!-- This page is where all the user's completed days are stored -->
+{% extends "layout.html" %}
+
+{% block title %}
+
+    Your Completion Calendar & History
+
+{% endblock %}
+
+
+{% block body %}
+
+    <header class="header">
+        <h1 class="goal_tracker_heading"><a href="/">Goal Tracker</a></h1>
+        <hr>
+        <h2>Your personal tracker to achieve your goals!</h2>
+    </header>
+
+    <nav class="navbar navbar-expand-lg m-2" style="background-color: white;">
+        <div class="container-fluid">
+            <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+
+                {% if session["user_id"] %}
+
+                    <ul class="navbar-nav mx-auto p-2">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/">Your Schedule</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/goals">Your Goals</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="/calendar">Calendar and History</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/logout">Logout</a>
+                        </li>
+                    </ul>
+
+                {% else %}
+
+                    <ul class="navbar-nav mx-auto p-2">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/login">Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/register">Register</a>
+                        </li>
+                    </ul>
+
+                {% endif %}
+
+            </div>
+        </div>
+    </nav>
+
+    <br>
+
+    <main class="container">
+        <br>
+        <h2 class="pagetitleheading">Your Completion Calendar & History</h2>
+        <br>
+
+        {% if existing_goals %}
+
+            <h3>Your Calendar</h3>
+            <h5>Today's Date: {{ currentdate.day }}/{{ currentdate.month }}/{{ currentdate.year }} </h5>
+            <hr>
+
+            <!-- Calendar structure where completed days are green and missed/yet to be completed days are gray -->
+            <table class="calendar_table">
+                <tbody>
+                    <tr>
+                    {% for day in completed_days_in_month %}
+
+                        {% if day["completion_state"] == True %}
+
+                            <td class="green_block"><strong>{{ day["daynumber"] }}</strong></td>
+
+                        {% else %}
+
+                            <td class="gray_block"><strong>{{ day["daynumber"] }}</strong></td>
+
+                        {% endif %}
+
+                        {% if day["daynumber"] is divisibleby 7 %}
+                            </tr>
+                            <tr>
+
+                        {% endif %}
+
+                    {% endfor %}
+                    </tr>
+                </tbody>
+            </table>
+
+            <br>
+            <hr>
+            <br>
+            <br>
+
+            <h3>Your History:</h3>
+            <p>The table below will display your completed history over the previous 14 goal completions.</p>
+            <hr>
+            <br>
+            <table class="table table-striped table-bordered">
+                <thead>
+                    <tr class="table-info">
+                        <th class="table_headings">Goal</th> <!-- Name of Goal -->
+                        <th class="table_headings">Completion Status</th> <!-- Green Completion Sign-->
+                        <th class="table_headings">Times Completed</th> <!-- Incremental Integer to visualise completions -->
+                        <th class="table_headings">Completion Date</th> <!-- marks day to show the habit was completed this day -->
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Loop through any goals that have been completed and display them on the table -->
+                    {% for completedgoals in completedgoalslist [:14] %}
+                        <tr>
+                            <td class="tabledata">{{ completedgoals['goal_title'] }}</td> <!-- Name -->
+                            <td class="goaltabledays"><div class="green_block"><strong>COMPLETED</strong></div></td> <!-- Completion Status -->
+                            <td class="tabledata">{{ completedgoals['days_completed'] }}</td> <!-- Times Completed -->
+                            <td class="tabledata">{{ completedgoals['date_completed'] }}</td> <!-- Date Completed -->
+                        </tr>
+
+                    {% endfor %}
+
+                </tbody>
+            </table>
+
+        {% else %}
+
+            <!-- Condition if the user doesn't have goals completed today -->
+            <h3 class="pagetitleheading">Your completed goals will be displayed here!</h3>
+            <h5 class="pagetitleheading">Click <a href="/">here</a> to view your schedule.</h5>
+
+        {% endif %}
+
+        <br>
+    </main>
+
+    {% if completedtotal >= 4 %}
+
+        <footer class="static_footer">
+            <p><strong>Adam's GoalTracker Site 2026</strong></p>
+            <p class="photo_info">Photo by Toomas Tartes provided by Unsplash</p>
+        </footer>
+
+    {% else %}
+
+        <footer>
+            <p><strong>Adam's GoalTracker Site 2026</strong></p>
+            <p class="photo_info">Photo by Toomas Tartes provided by Unsplash</p>
+        </footer>
+
+    {% endif %}
+
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+
+{% block title %}
+
+    Apology
+
+{% endblock %}
+
+{% block body %}
+
+    <header class="header">
+        <h1 class="goal_tracker_heading"><a href="/">Goal Tracker</a></h1>
+        <hr>
+        <h2>Your personal tracker to achieve your goals!</h2>
+    </header>
+
+    <main class="container">
+        <h1 class="pagetitleheading mb-3 mt-3">Apologies</h1>
+        <hr>
+        <h2 class="pagetitleheading">{{ apologytext }}</h2>
+        <h3 class="pagetitleheading">{{ code }}</h3>
+        <h4 class="pagetitleheading">Click <a href="{{ previouspage }}">here</a> to return</h4>
+    </main>
+
+    <footer>
+        <p><strong>Adam's GoalTracker Site 2026</strong></p>
+        <p class="photo_info">Photo by Toomas Tartes provided by Unsplash</p>
+    </footer>
+
+{% endblock %}

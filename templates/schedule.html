@@ -1,0 +1,252 @@
+<!-- This page is where all the user's schedule for the day can be seen -->
+{% extends "layout.html" %}
+
+
+{% block title %}
+
+    Your Schedule
+
+{% endblock %}
+
+
+{% block body %}
+
+    <header class="header">
+        <h1 class="goal_tracker_heading"><a href="/">Goal Tracker</a></h1>
+        <hr>
+        <h2>Your personal tracker to achieve your goals!</h2>
+    </header>
+
+    <nav class="navbar navbar-expand-lg m-2" style="background-color: white;">
+        <div class="container-fluid">
+            <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+
+                {% if session["user_id"] %}
+
+                    <ul class="navbar-nav mx-auto p-2">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="/">Your Schedule</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/goals">Your Goals</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/calendar">Calendar and History</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/logout">Logout</a>
+                        </li>
+                    </ul>
+
+                {% else %}
+
+                    <ul class="navbar-nav mx-auto p-2">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/login">Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/register">Register</a>
+                        </li>
+                    </ul>
+
+                {% endif %}
+
+            </div>
+        </div>
+    </nav>
+
+    <br>
+
+    <main class="container">
+
+        {% if anyscheduledgoals %}
+
+            {% if daybegun %}
+
+                <br>
+                <h2 class="pagetitleheading">Your Schedule</h2>
+                <br>
+
+                <h3>Today's Schedule - {{ date.day }}/{{ date.month }}/{{ date.year }}</h3>
+                <hr>
+                <br>
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr class="table-info">
+                            <th class="table_headings">Goal</th> <!-- Name of Goal -->
+                            <th class="table_headings">Your Progress</th> <!-- Progress Bar -->
+                            <th class="table_headings">Completion Status</th> <!-- Click to Increase Progress Bar-->
+                            <th class="table_headings">Reset Progress</th> <!-- Link in cell to take user to habit page which laysout all the habits info which they can change -->
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <!-- Loop through any habits that are scheduled for today and display them on the table -->
+                        {% for goal in scheduledgoals %}
+
+                            <tr>
+                                <td class="tabledata">{{ goal["goal_title"] }}</td> <!-- Name -->
+                                <td class="tabledata"> <!-- Progress. Use the length of goal integer as the completion check -->
+                                    <progress name="{{ goal['goal_title'] }}" class="progressbar" value="{{ goal['progress_number'] }}" max="{{ goal['length_of_goal'] }}"></progress>
+                                    <span id="{{ goal['goal_title'] }}" class="progressnumbers">{{ goal['progress_number'] }}/{{ goal['length_of_goal'] }}</span>
+                                </td>
+
+                                <!-- Completion Status: Do add plus 1 then, once bar is full, in real time, change to a button that say click to complete, and turn the button green saying completed -->
+                                <!-- Button Class type is also stored in a table so if user refreshes page or returns to this page later, the button type is saved and used in the if conditions -->
+                                {% if goal["progress_state"] == 1 %}
+                                    <td class="tabledata"><button id="{{ goal['goal_title'] }}" type="button" class="btn btn-primary progressbuttons" onclick='addtoprogress({{ goal["goal_title"] | tojson }})'>Add 1</button></td>
+
+                                {% elif goal["progress_state"] == 2 %}
+                                    <td class="tabledata"><button id="{{ goal['goal_title'] }}" type="button" class="btn btn-warning progressbuttons" onclick='addtoprogress({{ goal["goal_title"] | tojson }})'>Click to Complete!</button></td>
+
+                                {% elif goal["progress_state"] == 3 %}
+                                    <td class="tabledata"><button id="{{ goal['goal_title'] }}" type="button" class="btn btn-success progressbuttons" onclick='addtoprogress({{ goal["goal_title"] | tojson }})' disabled>Goal Completed!</button></td>
+
+                                {% endif %}
+
+                                <td class="tabledata"><button name='{{ goal["goal_title"] }}' type="submit" class="btn btn-danger" onclick='resetprogress({{ goal["goal_title"] | tojson }})'><strong>Reset</strong></button></td> <!-- More Info -->
+                            </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+                </table>
+
+            {% else %}
+
+                <br>
+                <br>
+                <form class="centreform" action="/begin_day" method="post"><button id="begin_day_button" class="btn btn-success">BEGIN DAY!</button></form>
+                <br>
+
+            {% endif %}
+
+        {% else %}
+
+            <!-- Condition if the user doesn't have goals scheduled today -->
+            <br>
+            <h3 class="pagetitleheading">Your day looks clear!</h3>
+            <h4 class="cleardayheading">Click <a href="/goals">here</a> to add a goal to your schedule.</h4>
+
+        {% endif %}
+
+        <br>
+    </main>
+
+    <footer>
+        <p><strong>Adam's GoalTracker Site 2026</strong></p>
+        <p class="photo_info">Photo by Toomas Tartes provided by Unsplash</p>
+    </footer>
+
+
+    <!-- The JavaScript below was written by myself but I did ask ChatGPT for assistance which I have commented out throughout for specifics on the assisatnce. I have marked these comments with *. -->
+
+    <!-- When the user clicks the increment button for their progress, increase the progress bar. Once the bar is full change the button to 'Click to complete' then finally 'Goal Completed' -->
+    <script>
+        function addtoprogress(name) {
+            // Create variables storing the goal title, the current value of how far the goal has progressed, the maximum progress the goal can go up to and the current button type of the button
+            let goaltitle = name;
+
+            // * I wasn't sure how to select specific attributes and their values when using arguments which contain values passed through Jinja.
+            // ChatGPT used it's own example code (not containing any of mine) to explain how you can use classes and the name values within the relevant tag to target specific values.
+            // I then wrote out the code below myself.
+
+            let currentgoalprogress = Number(document.querySelector('.progressbar[name="' + name + '"]').getAttribute('value'));
+            let maxprogress = Number(document.querySelector('.progressbar[name="' + name + '"]').getAttribute('max'));
+            let button = (document.querySelector('button[id="' + name + '"]'));
+            let class_status = (document.querySelector('button[id="' + name + '"]').getAttribute('class'));
+
+            // If the current value of the progress bar is less than the maximum value, increase the progress bar by 1 and update the value
+            if (currentgoalprogress < maxprogress) {
+                currentgoalprogress += 1;
+                (document.querySelector('.progressbar[name="' + name + '"]').setAttribute('value', currentgoalprogress));
+
+                str_currentgoalprogress = String(currentgoalprogress);
+                str_maxprogress = String(maxprogress);
+                (document.querySelector('.progressnumbers[id="' + name + '"]').textContent = `${str_currentgoalprogress}/${str_maxprogress}`);
+
+                // * I wasn't sure how to send requests to update a database when clicking a button so asked ChatGPT what methods can be used to do this.
+                // It suggested using fetch which it then broke down for me (using example code but not with mine) which I then integrated into my own code.
+                fetch('/goal_progress', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ goalname: goaltitle })
+                });
+
+                // If the current progress value has now become the same as the max value, change the button type and the text
+                if (Number(currentgoalprogress) === Number(maxprogress)) {
+                    if (class_status === 'btn btn-primary progressbuttons') {
+                        button.classList.remove('btn-primary');
+                        button.classList.add('btn-warning');
+                        button.textContent = "Click to Complete!";
+                    }
+                    fetch('/progress_status', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ goalname: goaltitle })
+                    });
+                }
+            }
+
+            // Else if the button type has already been changed to 'click to complete' and has been clicked, change the button type once again and text
+            else {
+                button.classList.remove('btn-warning');
+                button.classList.add('btn-success');
+                button.textContent = "Goal Completed!";
+                button.disabled = true;
+
+                // Clicking 'click to complete' needs to update the database to say this goal has been completed and the date of completion
+                fetch('/goal_completed', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ goalname: goaltitle })
+                });
+            }
+        }
+
+
+        function resetprogress(name) {
+            // Create variables storing the goal title, the current value of how far the goal has progressed, and the current button type of the button
+            let goaltitle = name;
+            let currentgoalprogress = Number(document.querySelector('.progressbar[name="' + name + '"]').getAttribute('value'));
+            let maxprogress = Number(document.querySelector('.progressbar[name="' + name + '"]').getAttribute('max'));
+            let button = (document.querySelector('button[id="' + name + '"]'));
+            let class_status = (document.querySelector('button[id="' + name + '"]').getAttribute('class'));
+
+            // Reset the current progress value back to 0
+            currentgoalprogress = 0;
+            (document.querySelector('.progressbar[name="' + name + '"]').setAttribute('value', currentgoalprogress));
+
+            str_currentgoalprogress = String(currentgoalprogress);
+            str_maxprogress = String(maxprogress);
+            (document.querySelector('.progressnumbers[id="' + name + '"]').textContent = `${str_currentgoalprogress}/${str_maxprogress}`);
+
+
+            // Check the current class type of the button and reset it to btn-primary
+            if (class_status === 'btn btn-warning progressbuttons') {
+                button.classList.remove('btn-warning');
+                button.classList.add('btn-primary');
+                button.textContent = "Add 1";
+            }
+
+            else if (class_status === 'btn btn-success progressbuttons') {
+                button.classList.remove('btn-success');
+                button.classList.add('btn-primary');
+                button.textContent = "Add 1";
+            }
+
+            button.disabled = false;
+
+            // Send a fetch request to reset_progress route to update databases
+            fetch('/reset_progress', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ goalname: goaltitle })
+            });
+        }
+    </script>
+
+{% endblock %}

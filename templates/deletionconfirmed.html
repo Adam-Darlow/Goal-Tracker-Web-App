@@ -1,0 +1,35 @@
+<!-- user clicks button to delete habit and takes to this page to fill out form and delete it -->
+{% extends "layout.html" %}
+
+{% block title %}
+
+    Goal Deleted
+
+{% endblock %}
+
+
+{% block body %}
+
+    <header class="header">
+        <h1 class="goal_tracker_heading"><a href="/">Goal Tracker</a></h1>
+        <hr>
+        <h2>Your personal tracker to achieve your goals!</h2>
+    </header>
+
+    <br>
+
+    <main class="container">
+        <br>
+        <h2 class="pagetitleheading">Your goal has been removed!</h2>
+        <p class="pagesubheading">Click <a href="goals">here</a> to return to your goals.</p>
+        <br>
+    </main>
+
+
+
+    <footer>
+        <p><strong>Adam's GoalTracker Site 2026</strong></p>
+        <p class="photo_info">Photo by Toomas Tartes provided by Unsplash</p>
+    </footer>
+
+{% endblock %}

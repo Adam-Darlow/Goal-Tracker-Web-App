@@ -1,0 +1,79 @@
+<!-- Show this page if the user has logged in and this is the first time they are looking at their schedule. -->
+<!-- Add logic in to python that this is a new user so show this page, once they have added their first habit,
+     change their status in the database so they no longer see this page -->
+{% extends "layout.html" %}
+
+{% block title %}
+
+    Your Schedule
+
+{% endblock %}
+
+{% block body %}
+
+    <header class="header">
+        <h1 class="goal_tracker_heading"><a href="/">Goal Tracker</a></h1>
+        <hr>
+        <h2>Your personal tracker to achieve your goals!</h2>
+    </header>
+
+    <nav class="navbar navbar-expand-lg m-2" style="background-color: white;">
+        <div class="container-fluid">
+            <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+
+                {% if session["user_id"] %}
+
+                    <ul class="navbar-nav mx-auto p-2">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="/">Your Schedule</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/goals">Your Goals</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/calendar">Calendar and History</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/logout">Logout</a>
+                        </li>
+                    </ul>
+
+                {% else %}
+
+                    <ul class="navbar-nav mx-auto p-2">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/login">Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/register">Register</a>
+                        </li>
+                    </ul>
+
+                {% endif %}
+
+            </div>
+        </div>
+    </nav>
+
+    <br>
+    
+    <main class="container">
+        <br>
+        <h2 class="pagetitleheading">Your Schedule Page</h2>
+        <br>
+        <h3 class="pagesubheading">Welcome to your schedule page!</h3>
+        <h4 class="pagesubheading">To populate your schedule, let's create your first goal.</h4>
+        <br>
+        <h5 class="pagesubheading">Click <a href="/goals">here</a> to view your goals!</h5>
+        <br>
+    </main>
+
+    <footer>
+        <p><strong>Adam's GoalTracker Site 2026</strong></p>
+        <p class="photo_info">Photo by Toomas Tartes provided by Unsplash</p>
+    </footer>
+
+{% endblock %}

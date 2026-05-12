@@ -1,0 +1,85 @@
+{% extends "layout.html" %}
+
+{% block title %}
+
+    Register
+
+{% endblock %}
+
+{% block body %}
+
+    <header class="header">
+        <h1 class="goal_tracker_heading"><a href="/">Goal Tracker</a></h1>
+        <hr>
+        <h2>Your personal tracker to achieve your goals!</h2>
+    </header>
+
+    <nav class="navbar navbar-expand-lg m-2" style="background-color: #e3f2fd;">
+        <div class="container-fluid">
+            <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+
+                {% if session["user_id"] %}
+
+                    <ul class="navbar-nav mx-auto p-2">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/">Your Schedule</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/goals">Your Goals</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/calendar">Calendar and History</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/logout">Logout</a>
+                        </li>
+                    </ul>
+
+                {% else %}
+
+                    <ul class="navbar-nav mx-auto p-2">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/login">Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="/register">Register</a>
+                        </li>
+                    </ul>
+
+                {% endif %}
+
+            </div>
+        </div>
+    </nav>
+
+    <br>
+
+    <main class="container">
+        <br>
+        <form class="accessform" action="/register" method="post">
+            <div class="mb-4">
+                <label for="loginusername" class="form-label"><strong>Username:</strong></label>
+                <input class="form-control" id="loginusername" type="text" name="username" placeholder="Username" autofocus autocomplete="off">
+            </div>
+            <div class="mb-4">
+                <label for="loginpassword" class="form-label"><strong>Password:</strong></label>
+                <input class="form-control" id="loginpassword" type="password" name="password" placeholder="Password" autocomplete="off">
+            </div>
+            <div class="mb-4">
+                <label for="loginconpassword" class="form-label"><strong>Confirmation Password:</strong></label>
+                <input class="form-control" id="loginconpassword" type="password" name="confirmationpassword" placeholder="Confirmation Password" autocomplete="off">
+            </div>
+            <button class="btn btn-primary" type="submit"><strong>Register</strong></button>
+        </form>
+    <br>
+    </main>
+
+    <footer>
+        <p><strong>Adam's GoalTracker Site 2026</strong></p>
+        <p class="photo_info">Photo by Toomas Tartes provided by Unsplash</p>
+    </footer>
+
+{% endblock %}
